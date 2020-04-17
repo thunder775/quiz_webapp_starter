@@ -15,14 +15,27 @@
 }
 
 .selected-option, .selected-option:hover {
-
     color: white;
 }
 
 .correct-option, .correct-option:hover {
+    margin: 12px;
+    border: 2px solid white;
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #58B19F;
 }
 
 .wrong-option, .wrong-option:hover {
+    margin: 12px;
+    border: 2px solid white;
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #FD7272;
 }
