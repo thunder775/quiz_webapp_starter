@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 
 function ProgressBar(props) {
     useEffect(() => {
-        console.log(props.width);
+        // console.log(props.width);
     });
     function getColor(){
         if(props.width<33){

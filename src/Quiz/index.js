@@ -14,19 +14,26 @@ class Quiz extends React.Component {
             selectedOption: null,
             questionNum: 0,
             isActive: true,
-            timer: 100
+            timer: 100,
+            responses: []
         };
         this.intevalId = null;
     }
 
     handleClick = (id) => {
+
+
         if (this.state.selectedOption === null) {
             let temp = this.state.score + (id === questionsList[this.state.questionNum].correct_choice ? 10 : 0);
+
+            let tempResponse = this.state.responses.slice();
+            tempResponse.push(questionsList[this.state.questionNum].options[id]);
             this.setState({
+                responses: tempResponse,
                 selectedOption: id,
                 score: temp,
                 isActive: false
-            })
+            });
         }
         this.stopTimer();
         setTimeout(() => {
@@ -35,35 +42,49 @@ class Quiz extends React.Component {
                 selectedOption: null,
                 isActive: true
             });
-            this.removeTimerInterval();
-        }, 3000)
+            this.removeTimerInterval(false);
+        }, 3000);
+
     };
     stopTimer = () => {
         clearInterval(this.intevalId);
     };
-    removeTimerInterval = () => {
+    removeTimerInterval = (addResponse) => {
         clearInterval(this.intevalId);
+        let tempResponse = this.state.responses.slice();
+        if (addResponse) tempResponse.push(null);
         this.setState({
+            responses: tempResponse,
             questionNum: this.state.questionNum + 1,
             selectedOption: null,
             isActive: true,
             timer: 100
         });
+        if (this.state.questionNum === questionsList.length - 1) {
+            this.props.history.push({
+                pathname: '/result',
+                state: {
+                    score: this.state.score,
+                    responses: this.state.responses
+                }
+            })
+        }
         this.startTimer();
     };
-componentDidMount() {
-    this.startTimer();
-}
+
+    componentDidMount() {
+        this.startTimer();
+    }
 
     startTimer = () => {
         this.intevalId = setInterval(() => {
             if (this.state.timer < 0) {
-                this.removeTimerInterval();
+                this.removeTimerInterval(true);
             }
             this.setState({
                 timer: this.state.timer - .04
             });
-            console.log([this.state]);
+
         }, 1);
 
     };
